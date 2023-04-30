@@ -4,11 +4,17 @@ import Title from './Title';
 
 function Specification(props) {
 
+  const arr = []
+
+  Object.values(props.selected).map((val,indx)=>{
+    arr.push(val)
+  })
+
     return (
         <React.Fragment>
           <Title>Task(s) Demonstrated</Title>
           <Typography component="p" variant="h5">
-            {props.selected ? props.selected[2] : ''}
+            {props.selected ? arr[2] : ''}
           </Typography>
         </React.Fragment>
       );

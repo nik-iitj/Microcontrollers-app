@@ -14,33 +14,39 @@ export default function Microcontrollers(props){
   const [data,setData] = useState({})
 
 
-  useEffect(() => {
+  // setData(props.mainData)
+
+  // useEffect(() => {
 
     
-      const readFile = async () => {
+  //     // const readFile = async () => {
 
-        try {
+  //     //   try {
   
-          const file = await fetch('ml.xlsx');
-          const arrayBuffer = await file.arrayBuffer();
-          const data = new Uint8Array(arrayBuffer);
-          const workbook = XLSX.read(data, { type: 'array' });
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
-          const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-          setData(excelData)
-          Output()
-        } catch (error) {
-          console.log(error);
-        }
-      };
+  //     //     const file = await fetch('ml.xlsx');
+  //     //     const arrayBuffer = await file.arrayBuffer();
+  //     //     const data = new Uint8Array(arrayBuffer);
+  //     //     const workbook = XLSX.read(data, { type: 'array' });
+  //     //     const sheetName = workbook.SheetNames[0];
+  //     //     const worksheet = workbook.Sheets[sheetName];
+  //     //     const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+  //     //     setData(excelData)
+  //     //     Output()
+  //     //   } catch (error) {
+  //     //     console.log(error);
+  //     //   }
+  //     // };
   
-      readFile();
+  //     // readFile();
+
+  //     setData(props.maiData)
+
+  //     console.log(props.maiData)
 
       
 
 
-  }, []);
+  // }, [props.mainData]);
 
 
   function update(arg){
@@ -55,16 +61,16 @@ export default function Microcontrollers(props){
     return (
       <div>
 
-    {Object.values(data).map(function(item,indx){
-      if(item.length>1 && indx>0){
+    {Object.values(props.final).map(function(item,indx){
+      
         return(
           <ListItemButton>
           <ListItemIcon>
             <MemoryIcon />
           </ListItemIcon>
-          <ListItemText primary={item[0]} onClick={()=>{update(item)}} key={indx}/>
+          <ListItemText primary={item['Microcontroller board/kit used']} onClick={()=>{update(item)}} key={indx}/>
           </ListItemButton>
-        )}})
+        )})
     }
 
       </div>    
@@ -84,7 +90,8 @@ export default function Microcontrollers(props){
       Saved Microcontrollers
     </ListSubheader>
 
-    <Output/>
+    {props.final ? <Output/> : ''}
+
 
   </React.Fragment>
 

@@ -8,13 +8,17 @@ function preventDefault(event) {
 
 export default function Speed(props) {
 
+  const arr = []
 
+  Object.values(props.selected).map((val,indx)=>{
+    arr.push(val)
+  })
 
   return (
     <React.Fragment>
       <Title>Achieved speed(clk frequency)</Title>
       <Typography component="p" variant="h5">
-        {props.selected ? props.selected[4] : ''}
+        {props.selected ? arr[4] : ''}
       </Typography>
     </React.Fragment>
   );

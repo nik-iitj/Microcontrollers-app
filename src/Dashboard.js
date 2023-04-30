@@ -16,24 +16,23 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import Microcontrollers  from './Microcontrollers';
 import Speed from './Speed';
 import Model from './Model';
 import Specification from './Specification'
 import Power from './Power'
 import Mainspec from './Mainspec'
+import { read, utils, writeFile } from 'xlsx';
 
 
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Created by : '}
-      <Link color="inherit" href="https://iitj.ac.in">
-        Jithendra, Mainratna and Sridhar
+    <Typography variant="body1" color="text.secondary" align="center" {...props}>
+      {<b>Mentored by :  </b>}
+      <Link color="inherit" href="https://research.iitj.ac.in/researcher/binod-kumar-kumar">
+        <b>Dr. Binod Kumar</b>
       </Link>{' '}
-      {new Date().getFullYear()}
       {'.'}
     </Typography>
   );
@@ -96,12 +95,34 @@ function DashboardContent() {
 
   const [data,setData] = useState({})
 
+  const [mainData, setMainData] = useState({})
+
   const getData = (d)=>{
   
       setData(d)
     
 
   }
+
+  const handleUpload = ($event) => {
+    const files = $event.target.files;
+    if (files.length) {
+        const file = files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const wb = read(event.target.result);
+            const sheets = wb.SheetNames;
+
+            if (sheets.length) {
+                const rows = utils.sheet_to_json(wb.Sheets[sheets[0]]);
+                setMainData(rows)
+                console.log(typeof(rows))
+                
+            }
+        }
+        reader.readAsArrayBuffer(file);
+    }
+}
 
   return (
     
@@ -135,11 +156,18 @@ function DashboardContent() {
             >
               Microcontroller Details
             </Typography>
-            {/* <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton> */}
+
+
+            <IconButton color="inherit">
+              
+              <input type="file" name="file" className="custom-file-input" id="inputGroupFile" required onChange={handleUpload}
+                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+
+          
+              
+            </IconButton>
+
+
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -159,7 +187,7 @@ function DashboardContent() {
           <List component="nav">
             {/* {mainListItems}
             <Divider sx={{ my: 1 }} /> */}
-            <Microcontrollers onSubmit = {getData}/>
+            <Microcontrollers onSubmit = {getData} final = {mainData}/>
           </List>
         </Drawer>
         <Box
